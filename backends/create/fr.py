@@ -4,7 +4,7 @@ from company import get_company_model
 
 
 @transaction.atomic
-def create(input_obj, accept_duplicate=False):
+def create(input_obj, accept_duplicate=False, user=None):
     CompanyModel = get_company_model()
     CompanyCountry = get_company_model("CompanyFR")
     CompanyAddress = get_company_model("CompanyAddressFR")
@@ -13,6 +13,8 @@ def create(input_obj, accept_duplicate=False):
         denomination=input_obj.get("denomination"),
         since=input_obj.get("since")
     )
+    company.user_tmp = user
+
     if input_obj.get("rna"):
         company.is_type = "ASSOCIATION"
     company.save()
